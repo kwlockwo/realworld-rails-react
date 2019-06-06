@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  prepared_statements: false
+
+development:
+  <<: *default
+  database: realworld-rails-react
+  username: devusr
+
+test:
+  <<: *default
+<% if ENV['CI'] %>
+  url: <%= ENV['DATABASE_URL'] %>
+<% else %>
+  database: realworld-rails-react-test
+  username: devusr
+<% end %>
+
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
