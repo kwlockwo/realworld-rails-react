@@ -1,6 +1,7 @@
 {
-  "name": "react-redux-realworld-example-app",
+  "name": "realworld-rails-react-client",
   "version": "0.1.0",
+  "license": "MIT",
   "private": true,
   "proxy": {
     "/api": {
