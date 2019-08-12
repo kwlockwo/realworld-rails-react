@@ -42,5 +42,22 @@
   "name": "realworld-rails-react",
   "scripts": {
   },
-  "stack": "heroku-18"
+  "stack": "heroku-18",
+  "environments": {
+    "test": {
+      "addons":[
+         "heroku-redis:in-dyno",
+         "heroku-postgresql:in-dyno"
+      ],
+      "env": {
+        "LANG": "en_US.UTF-8",
+        "RACK_ENV": "test",
+        "RAILS_ENV": "test",
+        "RAILS_LOG_TO_STDOUT": "enabled",
+        "RAILS_SERVE_STATIC_FILES": "enabled",
+        "HEROKU_APP_NAME": "ci",
+        "HEROKU_PARENT_APP_NAME": "ci-parent"
+      }
+    }
+  }
 }
