@@ -49,8 +49,8 @@
   "environments": {
     "test": {
       "addons":[
-         "heroku-redis:in-dyno",
-         "heroku-postgresql:in-dyno"
+         "heroku-redis",
+         "heroku-postgresql"
       ],
       "env": {
         "LANG": "en_US.UTF-8",
