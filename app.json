@@ -1,6 +1,7 @@
 {
   "addons": [
-    "heroku-postgresql"
+    "heroku-postgresql",
+    "heroku-redis"
   ],
   "buildpacks": [
     {
@@ -48,10 +49,6 @@
   "stack": "heroku-18",
   "environments": {
     "test": {
-      "addons":[
-         "heroku-redis",
-         "heroku-postgresql"
-      ],
       "env": {
         "LANG": "en_US.UTF-8",
         "RACK_ENV": "test",
