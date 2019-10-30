@@ -12,12 +12,12 @@ const YourFeedTab = props => {
     }
 
     return (
-      <li className="nav-item">
-        <a  href=""
-            className={ props.tab === 'feed' ? 'nav-link active' : 'nav-link' }
-            onClick={clickHandler}>
+      <li className='nav-item'>
+        <button type='button'
+          className={props.tab === 'feed' ? 'nav-link active' : 'nav-link'}
+          onClick={clickHandler}>
           Your Feed
-        </a>
+        </button>
       </li>
     );
   }
@@ -30,13 +30,12 @@ const GlobalFeedTab = props => {
     props.onTabClick('all', agent.Articles.all, agent.Articles.all());
   };
   return (
-    <li className="nav-item">
-      <a
-        href=""
-        className={ props.tab === 'all' ? 'nav-link active' : 'nav-link' }
+    <li className='nav-item'>
+      <button type='button'
+        className={props.tab === 'feed' ? 'nav-link active' : 'nav-link'}
         onClick={clickHandler}>
-        Global Feed
-      </a>
+        Your Feed
+      </button>
     </li>
   );
 };
@@ -47,10 +46,10 @@ const TagFilterTab = props => {
   }
 
   return (
-    <li className="nav-item">
-      <a href="" className="nav-link active">
-        <i className="ion-pound"></i> {props.tag}
-      </a>
+    <li className='nav-item'>
+      <button type='button' className='nav-link active'>
+        <i className='ion-pound' /> {props.tag}
+      </button>
     </li>
   );
 };
