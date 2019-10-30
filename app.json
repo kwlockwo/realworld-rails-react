@@ -3,7 +3,7 @@
   "buildpacks": [{ "url": "heroku/nodejs" }, { "url": "heroku/ruby" }],
   "description": "",
   "env": {
-    "APP_NAME": { }.
+    "APP_NAME": { },
     "LANG": { },
     "RACK_ENV": { },
     "RAILS_ENV": { },
