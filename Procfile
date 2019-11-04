@@ -1,2 +1,2 @@
 web: bundle exec puma -C config/puma.rb
-release: bundle exec rake db:migrate && exit 1
+release: bundle exec rake db:migrate
