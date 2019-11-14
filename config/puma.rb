@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'barnes'
+require 'puma_worker_killer'
 
 ssl_bind '127.0.0.1', '5000', {
     key: 'private.key',
@@ -49,6 +50,9 @@ rackup DefaultRackup
 #
 before_fork do
     ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
+
+    PumaWorkerKiller.ram = 512
+    PumaWorkerKiller.start
 
     PumaStatsLogger.run
 
