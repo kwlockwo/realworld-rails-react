@@ -35,6 +35,7 @@ workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 # block.
 #
 preload_app!
+rackup DefaultRackup
 
 # If you are preloading your application and using Active Record, it's
 # recommended that you close any connections to the database before workers
