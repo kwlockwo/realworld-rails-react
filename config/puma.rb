@@ -50,6 +50,8 @@ rackup DefaultRackup
 before_fork do
     ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
 
+    PumaStatsLogger.run
+
     Barnes.start
 end
 
@@ -67,3 +69,37 @@ end
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+class PumaStatsLogger
+
+    def self.run
+
+      Thread.new do
+        loop do
+          begin
+            stats = JSON.parse Puma.stats, symbolize_names: true
+
+            if stats[:worker_status]
+              stats[:worker_status].each do |worker|
+                stat = worker[:last_status]
+                worker_id = "worker.#{worker[:pid]}"
+
+                unless ENV['DYNO'].blank?
+                  worker_id = "#{ENV['DYNO']}.#{worker_id}"
+                end
+
+                pp "source=#{worker_id} sample#puma.backlog=#{stat[:backlog]} sample#puma.running=#{stat[:running]}"
+              end
+            else
+              pp "sample#puma.backlog=#{stats[:backlog]} sample#puma.running=#{stats[:running]}"
+            end
+          rescue => err
+            pp "[PUMA LOGGING ERROR] #{err}"
+          end
+
+          sleep 10
+        end
+      end
+    end
+
+  end
