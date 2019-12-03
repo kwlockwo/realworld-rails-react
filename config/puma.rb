@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+require 'barnes'
+require 'puma_worker_killer'
+
+ssl_bind '127.0.0.1', '5000', {
+    key: 'private.key',
+    cert: 'certificate.pem',
+    verify_mode: 'none'
+}
+
 # Puma can serve each request in a thread from an internal thread pool.
 # The `threads` method setting takes two numbers: a minimum and maximum.
 # Any libraries that use thread pools should be configured to match
@@ -33,6 +42,7 @@ workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 # block.
 #
 preload_app!
+rackup DefaultRackup
 
 # If you are preloading your application and using Active Record, it's
 # recommended that you close any connections to the database before workers
@@ -40,6 +50,13 @@ preload_app!
 #
 before_fork do
     ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
+
+    PumaWorkerKiller.ram = 512
+    PumaWorkerKiller.start
+
+    PumaStatsLogger.run
+
+    Barnes.start
 end
 
 # The code in the `on_worker_boot` will be called if you are using
@@ -56,3 +73,37 @@ end
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+class PumaStatsLogger
+
+    def self.run
+
+      Thread.new do
+        loop do
+          begin
+            stats = JSON.parse Puma.stats, symbolize_names: true
+
+            if stats[:worker_status]
+              stats[:worker_status].each do |worker|
+                stat = worker[:last_status]
+                worker_id = "worker.#{worker[:pid]}"
+
+                unless ENV['DYNO'].blank?
+                  worker_id = "#{ENV['DYNO']}.#{worker_id}"
+                end
+
+                pp "source=#{worker_id} sample#puma.backlog=#{stat[:backlog]} sample#puma.running=#{stat[:running]}"
+              end
+            else
+              pp "sample#puma.backlog=#{stats[:backlog]} sample#puma.running=#{stats[:running]}"
+            end
+          rescue => err
+            pp "[PUMA LOGGING ERROR] #{err}"
+          end
+
+          sleep 10
+        end
+      end
+    end
+
+  end
