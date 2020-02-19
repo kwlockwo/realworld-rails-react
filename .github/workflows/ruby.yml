@@ -20,6 +20,10 @@ jobs:
       with:
         ruby-version: 2.5.x
     - name: Build and test with Rake
+      env:
+        PGHOST: localhost
+        PGUSER: postgres
+        RAILS_ENV: test
       run: |
         gem install bundler:1.15.2
         bundle install --jobs 4 --retry 3
