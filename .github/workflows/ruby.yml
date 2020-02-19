@@ -21,8 +21,8 @@ jobs:
         ruby-version: 2.5.x
     - name: Build and test with Rake
       env:
-        PGHOST: localhost
-        PGUSER: postgres
+        CI: true
+        DATABASE_URL: postgresql://localhost
         RAILS_ENV: test
       run: |
         gem install bundler:1.15.2
