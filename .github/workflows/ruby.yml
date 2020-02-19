@@ -22,7 +22,7 @@ jobs:
     - name: Build and test with Rake
       env:
         CI: true
-        DATABASE_URL: postgresql://localhost
+        DATABASE_URL: postgresql://postgres@localhost/postgres
         RAILS_ENV: test
       run: |
         gem install bundler:1.15.2
