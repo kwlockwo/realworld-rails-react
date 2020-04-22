@@ -29,7 +29,7 @@ jobs:
       run: |
         gem install bundler:1.15.2
         bundle install --jobs 4 --retry 3
-        bundle exec rake db:setup
+        bundle exec rake db:setup db:migrate
 
     - name: Run Tests
       env:
