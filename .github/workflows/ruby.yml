@@ -13,8 +13,8 @@ jobs:
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.5.3
-    - name: Build and test with Rake
+    - name: Build and test with bin/rails test
       run: |
         gem install bundler:1.15.2 
         bundle install --jobs 4 --retry 3
-        bundle exec rake
+        bin/rails test
