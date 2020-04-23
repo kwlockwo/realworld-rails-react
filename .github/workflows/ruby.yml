@@ -36,8 +36,8 @@ jobs:
         PGUSER: postgres
         RAILS_ENV: test
       run: |
-        bundle exec rake db:setup
-        bundle exec rake db:migrate
+        bin/rails db:setup
+        bin/rails db:migrate
 
 
     - name: Run Tests
