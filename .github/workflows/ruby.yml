@@ -1,0 +1,51 @@
+name: Ruby Workflow
+
+on: [push,pull_request]
+
+jobs:
+  build:
+    name: Rails Tests
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:11.5
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby 2.5.3
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.5.x
+
+    - name: Install PostgreSQL client
+      run: |
+        sudo apt-get -yqq install libpq-dev
+
+    - name: Build App
+      env:
+        DATABASE_URL: postgres://postgres:@localhost:5432/test
+        RAILS_ENV: test
+      run: |
+        gem install bundler:1.15.2
+        bundle install --jobs 4 --retry 3
+
+    - name: Test Setup
+      env:
+        DATABASE_URL: postgres://postgres:@localhost:5432/test
+        RAILS_ENV: test
+      run: |
+        bundle exec rake db:setup
+        bundle exec rake db:migrate
+
+
+    - name: Run Tests
+      env:
+        DATABASE_URL: postgres://postgres:@localhost:5432/test
+        RAILS_ENV: test
+      run: |
+        bundle exec rake test
