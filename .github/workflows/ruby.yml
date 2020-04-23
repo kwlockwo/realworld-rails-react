@@ -1,9 +1,10 @@
-name: Ruby
+name: Ruby Workflow
 
-on: [push]
+on: [push,pull_request]
 
 jobs:
   build:
+    name: Rails Tests
 
     runs-on: ubuntu-latest
 
@@ -21,6 +22,10 @@ jobs:
       with:
         ruby-version: 2.5.x
 
+    - name: Install PostgreSQL client
+      run: |
+        sudo apt-get -yqq install libpq-dev
+
     - name: Build App
       env:
         PGHOST: localhost
@@ -36,8 +41,8 @@ jobs:
         PGUSER: postgres
         RAILS_ENV: test
       run: |
-        bin/rails db:setup
-        bin/rails db:migrate
+        bundle exec rake db:setup
+        bundle exec rake db:migrate
 
 
     - name: Run Tests
