@@ -29,7 +29,7 @@
         "RAILS_SERVE_STATIC_FILES": "enabled"
       },
       "scripts": {
-        "test-setup": "psql $DATABASE_URL -c 'ALTER SYSTEM SET max_connections=500;' && pg_ctl restart"
+        "test-setup": "psql $DATABASE_URL -c 'ALTER SYSTEM SET max_connections=500;' && pg_ctl -l .pg.log -w restart > /dev/null"
       }
     },
     "review": {
