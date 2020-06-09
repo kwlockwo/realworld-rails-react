@@ -27,6 +27,9 @@
         "RAILS_ENV": "test",
         "RAILS_LOG_TO_STDOUT": "enabled",
         "RAILS_SERVE_STATIC_FILES": "enabled"
+      },
+      "scripts": {
+        "test-setup": "psql $DATABASE_URL -c 'ALTER SYSTEM SET max_connections=500;' && pg_ctl restart"
       }
     },
     "review": {
