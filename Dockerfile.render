@@ -33,7 +33,7 @@ fi;
 
 # For running the app, we use a clean base image and also one without Ubuntu development packages
 # https://devcenter.heroku.com/articles/heroku-20-stack#heroku-20-docker-image
-FROM ghcr.io/renderinc/heroku-app-runner:${REDNER_HEROKU_STACK} AS runner
+FROM ghcr.io/renderinc/heroku-app-runner:${RENDER_HEROKU_STACK} AS runner
 
 # Here we copy your build artifacts from the build image to the runner so that
 # the image that we deploy to Render is smaller and, therefore, can start up
